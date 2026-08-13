@@ -12,19 +12,50 @@ class CatalogScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final filteredProductsAsync = ref.watch(filteredProductsProvider);
     final currentFilter = ref.watch(categoryFilterProvider);
+    final currentSort = ref.watch(productSortProvider);
 
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            onChanged: (value) => 
-                ref.read(searchQueryProvider.notifier).setQuery(value),
-            decoration: const InputDecoration(
-              hintText: 'Search products...',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
-            ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  onChanged: (value) => 
+                      ref.read(searchQueryProvider.notifier).setQuery(value),
+                  decoration: const InputDecoration(
+                    hintText: 'Search products...',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              PopupMenuButton<ProductSortOrder>(
+                icon: const Icon(Icons.sort),
+                onSelected: (order) => 
+                    ref.read(productSortProvider.notifier).setSortOrder(order),
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: ProductSortOrder.none,
+                    child: Text('Default'),
+                  ),
+                  const PopupMenuItem(
+                    value: ProductSortOrder.priceAsc,
+                    child: Text('Price: Low to High'),
+                  ),
+                  const PopupMenuItem(
+                    value: ProductSortOrder.priceDesc,
+                    child: Text('Price: High to Low'),
+                  ),
+                  const PopupMenuItem(
+                    value: ProductSortOrder.nameAsc,
+                    child: Text('Name: A-Z'),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
         SingleChildScrollView(
