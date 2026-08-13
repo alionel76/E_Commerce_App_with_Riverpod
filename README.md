@@ -61,4 +61,4 @@ Le projet inclut une suite de tests robuste pour garantir la stabilité :
 4.  **Lancement** : `flutter run`
 
 ---
-Développé avec ❤️ pour illustrer la puissance d'une architecture propre avec Flutter et Riverpod.
+Développé **Lionel Adandokpossi**.
