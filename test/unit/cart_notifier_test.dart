@@ -11,6 +11,10 @@ void main() {
       container = ProviderContainer();
     });
 
+    tearDown(() {
+      container.dispose();
+    });
+
     test('initial state is empty', () {
       expect(container.read(cartProvider), []);
     });
@@ -30,6 +34,57 @@ void main() {
       final cart = container.read(cartProvider);
       expect(cart.length, 1);
       expect(cart[0].product.id, '1');
+      expect(cart[0].quantity, 1);
+    });
+
+    test('increment quantity when adding same product', () {
+      final product = Product(
+        id: '1',
+        name: 'Test Product',
+        description: 'Description',
+        price: 10.0,
+        imageUrl: '',
+        category: 'Test',
+      );
+
+      container.read(cartProvider.notifier).addToCart(product);
+      container.read(cartProvider.notifier).addToCart(product);
+
+      final cart = container.read(cartProvider);
+      expect(cart.length, 1);
+      expect(cart[0].quantity, 2);
+    });
+
+    test('update quantity', () {
+      final product = Product(
+        id: '1',
+        name: 'Test Product',
+        description: 'Description',
+        price: 10.0,
+        imageUrl: '',
+        category: 'Test',
+      );
+
+      container.read(cartProvider.notifier).addToCart(product);
+      container.read(cartProvider.notifier).updateQuantity('1', 5);
+
+      expect(container.read(cartProvider)[0].quantity, 5);
+    });
+
+    test('remove product from cart', () {
+      final product = Product(
+        id: '1',
+        name: 'Test Product',
+        description: 'Description',
+        price: 10.0,
+        imageUrl: '',
+        category: 'Test',
+      );
+
+      container.read(cartProvider.notifier).addToCart(product);
+      container.read(cartProvider.notifier).removeFromCart('1');
+
+      expect(container.read(cartProvider), []);
     });
   });
 }

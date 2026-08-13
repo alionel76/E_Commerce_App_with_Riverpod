@@ -9,8 +9,9 @@ void main() {
     late ProviderContainer container;
 
     setUp(() async {
-      SharedPreferences.setMockInitialValues({'favorites': ['1']});
+      SharedPreferences.setMockInitialValues({'favorites': ['1', '2']});
       final prefs = await SharedPreferences.getInstance();
+      
       container = ProviderContainer(
         overrides: [
           sharedPreferencesProvider.overrideWithValue(prefs),
@@ -18,8 +19,26 @@ void main() {
       );
     });
 
-    test('loads initial favorites', () {
-      expect(container.read(favoritesProvider), {'1'});
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('loads initial favorites from storage', () {
+      final favorites = container.read(favoritesProvider);
+      expect(favorites, {'1', '2'});
+    });
+
+    test('toggle favorite removes existing item', () async {
+      await container.read(favoritesProvider.notifier).toggleFavorite('1');
+      final favorites = container.read(favoritesProvider);
+      expect(favorites.contains('1'), false);
+      expect(favorites.contains('2'), true);
+    });
+
+    test('toggle favorite adds new item', () async {
+      await container.read(favoritesProvider.notifier).toggleFavorite('3');
+      final favorites = container.read(favoritesProvider);
+      expect(favorites.contains('3'), true);
     });
   });
 }
