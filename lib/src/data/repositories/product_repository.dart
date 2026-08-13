@@ -1,8 +1,7 @@
-import '../models/product.dart';
+import '../../domain/models/product.dart';
 
 class ProductRepository {
   Future<List<Product>> fetchProducts() async {
-    // Simulate network delay
     await Future.delayed(const Duration(seconds: 1));
     return [
       Product(

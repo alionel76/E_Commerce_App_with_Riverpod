@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/cart_item.dart';
-import '../models/product.dart';
+import '../../domain/models/cart_item.dart';
+import '../../domain/models/product.dart';
 
 class CartNotifier extends Notifier<List<CartItem>> {
   @override

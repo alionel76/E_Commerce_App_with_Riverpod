@@ -80,7 +80,6 @@ class CartScreen extends ConsumerWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Mock checkout
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Checkout not implemented')),
                         );

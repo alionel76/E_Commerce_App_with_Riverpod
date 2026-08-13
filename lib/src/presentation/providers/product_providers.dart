@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/product.dart';
-import '../repositories/product_repository.dart';
-import '../services/product_service.dart';
+import '../../domain/models/product.dart';
+import '../../data/repositories/product_repository.dart';
+import '../../domain/services/product_service.dart';
 import 'search_provider.dart';
 
 enum ProductSortOrder {

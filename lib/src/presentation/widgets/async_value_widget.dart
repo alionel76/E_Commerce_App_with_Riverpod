@@ -29,7 +29,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Logic to retry could be added here or passed in
+                // Logic to retry
               },
               child: const Text('Retry'),
             ),

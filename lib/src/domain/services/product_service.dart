@@ -1,5 +1,5 @@
 import '../models/product.dart';
-import '../repositories/product_repository.dart';
+import '../../data/repositories/product_repository.dart';
 
 class ProductService {
   final ProductRepository _repository;
@@ -7,7 +7,6 @@ class ProductService {
   ProductService(this._repository);
 
   Future<List<Product>> getProducts() async {
-    // Add business logic here if needed (filtering, sorting, etc.)
     return _repository.fetchProducts();
   }
 
