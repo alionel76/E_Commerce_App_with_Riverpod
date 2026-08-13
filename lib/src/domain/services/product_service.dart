@@ -1,8 +1,8 @@
 import '../models/product.dart';
-import '../../data/repositories/product_repository.dart';
+import '../repositories/i_product_repository.dart';
 
 class ProductService {
-  final ProductRepository _repository;
+  final IProductRepository _repository;
 
   ProductService(this._repository);
 

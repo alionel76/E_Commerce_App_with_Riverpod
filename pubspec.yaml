@@ -37,6 +37,7 @@ dependencies:
   flutter_riverpod: ^3.4.2
   shared_preferences: ^2.2.2
   collection: ^1.18.0
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:

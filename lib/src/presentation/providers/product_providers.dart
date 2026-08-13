@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/product.dart';
+import '../../domain/repositories/i_product_repository.dart';
 import '../../data/repositories/product_repository.dart';
 import '../../domain/services/product_service.dart';
 import 'search_provider.dart';
@@ -11,7 +12,7 @@ enum ProductSortOrder {
   nameAsc,
 }
 
-final productRepositoryProvider = Provider((ref) => ProductRepository());
+final productRepositoryProvider = Provider<IProductRepository>((ref) => MockProductRepository());
 
 final productServiceProvider = Provider((ref) {
   final repository = ref.watch(productRepositoryProvider);

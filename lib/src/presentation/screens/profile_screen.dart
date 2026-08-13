@@ -19,10 +19,16 @@ class ProfileScreen extends ConsumerWidget {
           child: Icon(Icons.person, size: 50),
         ),
         const SizedBox(height: 16),
-        Text(
-          user?.name ?? 'Guest',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headlineSmall,
+        GestureDetector(
+          onTap: () => _showEditNameDialog(context, ref, user?.name ?? ''),
+          child: Text(
+            user?.name ?? 'Guest',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              decoration: TextDecoration.underline,
+              color: Colors.blue,
+            ),
+          ),
         ),
         Text(
           user?.email ?? '',
@@ -56,6 +62,33 @@ class ProfileScreen extends ConsumerWidget {
           child: const Text('Logout'),
         ),
       ],
+    );
+  }
+
+  void _showEditNameDialog(BuildContext context, WidgetRef ref, String currentName) {
+    final controller = TextEditingController(text: currentName);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Name'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(hintText: 'Enter your name'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              ref.read(userProvider.notifier).updateName(controller.text);
+              Navigator.pop(context);
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -20,7 +20,7 @@ void main() {
     });
 
     test('add product to cart', () {
-      final product = Product(
+      const product = Product(
         id: '1',
         name: 'Test Product',
         description: 'Description',
@@ -38,7 +38,7 @@ void main() {
     });
 
     test('increment quantity when adding same product', () {
-      final product = Product(
+      const product = Product(
         id: '1',
         name: 'Test Product',
         description: 'Description',
@@ -56,7 +56,7 @@ void main() {
     });
 
     test('update quantity', () {
-      final product = Product(
+      const product = Product(
         id: '1',
         name: 'Test Product',
         description: 'Description',
@@ -72,7 +72,7 @@ void main() {
     });
 
     test('remove product from cart', () {
-      final product = Product(
+      const product = Product(
         id: '1',
         name: 'Test Product',
         description: 'Description',

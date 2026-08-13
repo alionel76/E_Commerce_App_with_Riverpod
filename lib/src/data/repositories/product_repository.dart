@@ -1,6 +1,8 @@
 import '../../domain/models/product.dart';
+import '../../domain/repositories/i_product_repository.dart';
 
-class ProductRepository {
+class MockProductRepository implements IProductRepository {
+  @override
   Future<List<Product>> fetchProducts() async {
     await Future.delayed(const Duration(seconds: 1));
     return [

@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:e_commerce_app_with_riverpod/src/domain/services/product_service.dart';
 import 'package:e_commerce_app_with_riverpod/src/domain/models/product.dart';
-import 'package:e_commerce_app_with_riverpod/src/data/repositories/product_repository.dart';
+import 'package:e_commerce_app_with_riverpod/src/domain/repositories/i_product_repository.dart';
 
-class MockProductRepository implements ProductRepository {
+class MockProductRepository implements IProductRepository {
   @override
   Future<List<Product>> fetchProducts() async {
-    return [
+    return const [
       Product(id: '1', name: 'Laptop', description: 'Powerful laptop', price: 1000, imageUrl: '', category: 'Electronics'),
       Product(id: '2', name: 'Sofa', description: 'Comfy sofa', price: 500, imageUrl: '', category: 'Home'),
     ];

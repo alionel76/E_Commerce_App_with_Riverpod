@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/models/cart_item.dart';
+import '../../domain/models/cart_product.dart';
 import '../../domain/models/product.dart';
 
-class CartNotifier extends Notifier<List<CartItem>> {
+class CartNotifier extends Notifier<List<CartProduct>> {
   @override
-  List<CartItem> build() {
+  List<CartProduct> build() {
     return [];
   }
 
@@ -19,7 +19,7 @@ class CartNotifier extends Notifier<List<CartItem>> {
             state[i]
       ];
     } else {
-      state = [...state, CartItem(product: product, quantity: 1)];
+      state = [...state, CartProduct(product: product, quantity: 1)];
     }
   }
 
@@ -45,4 +45,4 @@ class CartNotifier extends Notifier<List<CartItem>> {
       state.fold(0, (sum, item) => sum + (item.product.price * item.quantity));
 }
 
-final cartProvider = NotifierProvider<CartNotifier, List<CartItem>>(CartNotifier.new);
+final cartProvider = NotifierProvider<CartNotifier, List<CartProduct>>(CartNotifier.new);
