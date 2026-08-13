@@ -1,67 +1,59 @@
 # E-Commerce App with Riverpod
 
-Une application mobile d'e-commerce moderne construite avec **Flutter** et **Riverpod 3.0**, illustrant les meilleures pratiques de gestion d'état, une architecture en couches et une couverture de tests robuste.
+Une application mobile d'e-commerce moderne construite avec **Flutter** et **Riverpod 3.0**, illustrant les meilleures pratiques de gestion d'état, une **architecture en couches (Layered Architecture)** et une couverture de tests exhaustive.
 
 ## 🚀 Fonctionnalités Principales
 
-- **Catalogue Dynamique** : Liste complète des produits avec recherche en temps réel, filtrage par catégorie et **tri avancé** (Prix croissant/décroissant, Nom).
-- **Gestion du Panier** : Ajout/suppression de produits, mise à jour des quantités et calcul automatique du total via `CartNotifier`.
-- **Système de Favoris Persistant** : Les favoris sont sauvegardés localement via `SharedPreferences`. La logique de chargement est synchronisée dès le démarrage de l'application via un override de provider.
-- **Profil Utilisateur** : Écran dédié affichant les informations de l'utilisateur et permettant de basculer entre le mode sombre et clair.
-- **Thème Personnalisable** : Support du mode sombre et clair avec persistance du choix utilisateur.
-- **Gestion d'État Avancée** : Utilisation de `NotifierProvider`, `FutureProvider` et `AsyncValue` pour une réactivité optimale (plus de 8 providers distincts).
-- **Gestion Robuste des Erreurs** : Utilisation d'un widget générique `AsyncValueWidget` pour uniformiser le traitement des états de chargement et d'erreur.
+- **Catalogue Dynamique** : Liste de produits avec recherche textuelle, filtrage par catégorie et **système de tri** (Prix, Nom).
+- **Gestion du Panier** : Ajout, suppression et modification des quantités avec calcul automatique du total en temps réel.
+- **Favoris Persistants** : Marquage des produits favoris avec sauvegarde locale via `SharedPreferences`. Les données sont synchronisées dès le démarrage.
+- **Profil Utilisateur & Thème** : Écran de profil (mock) et gestion du thème (Sombre/Clair) avec persistance du choix de l'utilisateur.
+- **Gestion d'État Avancée** : Utilisation intensive de Riverpod (Notifier, FutureProvider, AsyncValue) avec plus de 10 providers distincts.
+- **UI UX Résiliente** : Gestion centralisée des états de chargement et d'erreur via le composant réutilisable `AsyncValueWidget`.
 
 ## 🛠️ Architecture & Stack Technique
 
-Le projet suit une architecture structurée pour séparer les responsabilités :
+Le projet suit une **Architecture en Couches (Clean-like)** pour une séparation stricte des préoccupations :
 
-- **Couche Données (Data)** : `ProductRepository` gère la récupération brute des données.
-- **Couche Service (Domain/Business)** : `ProductService` contient la logique métier pure (filtrage, tri) indépendamment du framework UI.
-- **Couche État (State/Providers)** : Les providers Riverpod (`Notifier`, `FutureProvider`) exposent l'état à l'UI.
-- **Couche Présentation (UI)** : Widgets Flutter réactifs utilisant `ConsumerWidget` ou `ConsumerStatefulWidget`.
+### 📂 Structure des Dossiers (`lib/src/`)
 
-### Liste des Providers Clés :
-- `productsProvider` : Récupère la liste des produits (Future).
-- `filteredProductsProvider` : Combine recherche, catégorie et tri pour fournir la liste finale.
-- `cartProvider` : Gère l'état du panier d'achat.
-- `favoritesProvider` : Gère les favoris avec persistance locale.
-- `themeProvider` : Gère le mode d'affichage.
-- `userProvider` : Gère les données du profil utilisateur.
-- `productSortProvider` : Gère l'ordre de tri sélectionné.
-- `searchQueryProvider` : Gère la chaîne de recherche actuelle.
+- **`data/`** : Couche d'accès aux données.
+  - `repositories/` : Implémentation de la récupération des données (Mock Product Repository).
+- **`domain/`** : Couche métier (indépendante du framework UI).
+  - `models/` : Entités pures (`Product`, `CartItem`, `UserProfile`).
+  - `services/` : Logique métier pure (logique de filtrage et de recherche).
+- **`presentation/`** : Couche interface utilisateur et état.
+  - `providers/` : Notifiers Riverpod gérant l'état de l'application.
+  - `screens/` : Écrans principaux (Catalog, Cart, Favorites, Profile, Details).
+  - `widgets/` : Composants UI réutilisables (ProductCard, AsyncValueWidget).
 
-## 🧪 Tests
+## 🧪 Qualité du Code & Tests
 
-La qualité du code est assurée par une suite de tests complète :
-- **Tests Unitaires** : 
-  - `cart_notifier_test.dart`
-  - `favorites_notifier_test.dart`
-  - `product_service_test.dart`
-  - `sort_notifier_test.dart`
-- **Tests de Widgets** :
-  - `widget_test.dart` (Validation du flux principal et de l'initialisation).
+Le projet inclut une suite de tests complète couvrant la logique métier et l'interface :
 
-## 📂 Structure du Dossier `lib`
+- **Tests Unitaires** (`test/unit/`) :
+  - `cart_notifier_test.dart` : Logique du panier.
+  - `favorites_notifier_test.dart` : Persistance et état des favoris.
+  - `product_service_test.dart` : Logique de filtrage et recherche.
+  - `sort_notifier_test.dart` : Logique de tri.
+- **Tests de Widgets** (`test/`) :
+  - `widget_test.dart` : Validation de l'initialisation de l'app et du flux principal.
 
-```text
-lib/
-├── main.dart
-└── src/
-    ├── models/       # Entités de données
-    ├── providers/    # Gestion de l'état (Riverpod)
-    ├── repositories/ # Accès aux données
-    ├── services/     # Logique métier
-    ├── screens/      # Écrans de l'application
-    └── widgets/      # Composants UI réutilisables
-```
-
-## ⚙️ Installation
+## ⚙️ Installation et Utilisation
 
 1.  **Prérequis** : Flutter SDK `^3.12.2`.
-2.  **Installation** : `flutter pub get`
-3.  **Lancement** : `flutter run`
-4.  **Exécuter les tests** : `flutter test`
+2.  **Installation** : 
+    ```bash
+    flutter pub get
+    ```
+3.  **Lancement** : 
+    ```bash
+    flutter run
+    ```
+4.  **Exécuter les tests** : 
+    ```bash
+    flutter test
+    ```
 
 ---
-Développé avec ❤️ pour illustrer la puissance de Riverpod dans Flutter.
+Développé par **Lionel Adandokpossi**.
