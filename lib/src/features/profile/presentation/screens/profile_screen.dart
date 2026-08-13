@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:e_commerce_app_with_riverpod/src/features/settings/presentation/providers/theme_provider.dart';
-import 'package:e_commerce_app_with_riverpod/src/features/profile/presentation/providers/user_provider.dart';
+import '../../../settings/presentation/providers/theme_provider.dart';
+import '../providers/user_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});

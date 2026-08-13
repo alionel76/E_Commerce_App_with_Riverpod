@@ -20,8 +20,10 @@ final productServiceProvider = Provider((ref) {
 });
 
 final productsProvider = FutureProvider<List<Product>>((ref) async {
-  final service = ref.watch(productServiceProvider);
-  return service.getProducts();
+  return AsyncValue.guard(() async {
+    final service = ref.watch(productServiceProvider);
+    return await service.getProducts();
+  }).then((value) => value.requireValue);
 });
 
 class CategoryFilterNotifier extends Notifier<String?> {

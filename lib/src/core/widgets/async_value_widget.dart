@@ -6,10 +6,12 @@ class AsyncValueWidget<T> extends StatelessWidget {
     super.key,
     required this.value,
     required this.data,
+    this.onRetry,
   });
 
   final AsyncValue<T> value;
   final Widget Function(T) data;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +28,13 @@ class AsyncValueWidget<T> extends StatelessWidget {
               style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Logic to retry can be implemented here if needed
-              },
-              child: const Text('Retry'),
-            ),
+            if (onRetry != null) ...[
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: onRetry,
+                child: const Text('Retry'),
+              ),
+            ],
           ],
         ),
       ),

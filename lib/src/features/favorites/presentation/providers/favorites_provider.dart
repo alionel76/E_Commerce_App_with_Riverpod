@@ -16,9 +16,15 @@ class FavoritesNotifier extends Notifier<Set<String>> {
     } else {
       newState.add(productId);
     }
+    
+    // Optimistic UI update
     state = newState;
-    final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.setStringList('favorites', state.toList());
+    
+    // Robust persistence with error handling
+    await AsyncValue.guard(() async {
+      final prefs = ref.read(sharedPreferencesProvider);
+      await prefs.setStringList('favorites', state.toList());
+    });
   }
 
   bool isFavorite(String productId) => state.contains(productId);

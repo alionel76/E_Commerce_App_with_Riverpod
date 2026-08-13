@@ -1,5 +1,5 @@
-import 'package:e_commerce_app_with_riverpod/src/features/products/domain/models/product.dart';
-import 'package:e_commerce_app_with_riverpod/src/features/products/domain/repositories/i_product_repository.dart';
+import '../../domain/models/product.dart';
+import '../../domain/repositories/i_product_repository.dart';
 
 class MockProductRepository implements IProductRepository {
   @override

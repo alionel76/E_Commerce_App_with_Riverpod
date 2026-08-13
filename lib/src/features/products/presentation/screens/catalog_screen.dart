@@ -82,6 +82,7 @@ class CatalogScreen extends ConsumerWidget {
         Expanded(
           child: AsyncValueWidget(
             value: filteredProductsAsync,
+            onRetry: () => ref.invalidate(productsProvider),
             data: (products) => products.isEmpty 
               ? const Center(child: Text('No products found.'))
               : GridView.builder(
