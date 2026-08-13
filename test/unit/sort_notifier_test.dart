@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:e_commerce_app_with_riverpod/src/presentation/providers/product_providers.dart';
+import 'package:e_commerce_app_with_riverpod/src/features/products/presentation/providers/product_providers.dart';
 
 void main() {
   group('ProductSortNotifier Tests', () {

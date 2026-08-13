@@ -1,64 +1,66 @@
-# E-Commerce App with Riverpod
+# E-Commerce App with Riverpod 3.0
 
-Une application mobile d'e-commerce moderne construite avec **Flutter** et **Riverpod 3.0**, illustrant les meilleures pratiques de gestion d'état, une **architecture en couches (Layered Architecture)** rigoureuse et une couverture de tests exhaustive.
+Bienvenue dans le projet **E-Commerce App**, une démonstration technique avancée de l'écosystème **Flutter** utilisant **Riverpod 3.0**. Ce projet a été conçu pour illustrer une architecture "Enterprise-ready", mettant l'accent sur la scalabilité, la testabilité et une séparation stricte des préoccupations via une **Architecture orientée fonctionnalités (Feature-First Architecture)**.
 
-## 🚀 Fonctionnalités Principales
+## 🚀 Vision du Projet
 
-- **Catalogue Dynamique** : Liste de produits avec recherche textuelle, filtrage par catégorie et **système de tri** (Prix, Nom).
-- **Gestion du Panier** : Ajout, suppression et modification des quantités avec calcul automatique du total en temps réel via `CartNotifier`.
-- **Favoris Persistants** : Marquage des produits favoris avec sauvegarde locale via `SharedPreferences`. Les données sont synchronisées dès le démarrage grâce à l'injection de dépendances Riverpod.
-- **Profil Utilisateur Interactif** : Écran de profil permettant de modifier le nom d'utilisateur et de basculer entre le mode sombre et clair.
-- **Thème Personnalisable** : Support du mode sombre et clair avec persistance du choix de l'utilisateur.
-- **Gestion d'État Avancée** : Utilisation intensive de Riverpod avec plus de 8 providers distincts gérant tout, de l'authentification (mock) aux préférences de stockage.
-- **UI UX Résiliente** : Gestion centralisée des états de chargement et d'erreur via le composant réutilisable `AsyncValueWidget`.
+L'objectif principal est de fournir une base solide pour une application de commerce électronique, en exploitant les dernières fonctionnalités de **Riverpod** pour une gestion d'état réactive et performante. L'application gère un catalogue de produits, un panier d'achat persistant, des favoris et un profil utilisateur personnalisable, le tout dans un environnement robuste et testé.
 
-## 🛠️ Architecture & Stack Technique
+## 🛠️ Stack Technique & Architecture
 
-Le projet suit une **Architecture en Couches** stricte pour une séparation optimale des préoccupations :
+### Architecture par Fonctionnalités (Feature-First)
+Contrairement à une structure "plate", ce projet organise le code par domaine métier (Features). Chaque fonctionnalité (`products`, `cart`, `favorites`, `profile`) possède sa propre logique interne, suivant le pattern **Data-Domain-Presentation** :
 
-### 📂 Structure des Dossiers (`lib/src/`)
+-   **`core/`** : Contient les composants transversaux partagés par toutes les fonctionnalités (ex: `AsyncValueWidget` pour la gestion des erreurs).
+-   **`src/features/`** : Cœur de l'application organisé par domaine.
+    -   **`domain/`** : Contient les entités pures (`Product`), les interfaces (contrats) et les services de logique métier.
+    -   **`data/`** : Implémentations concrètes de l'accès aux données (Dépôts, APIs).
+    -   **`presentation/`** : Gestion de l'état (Providers Riverpod) et composants UI (Screens, Widgets).
 
-- **`data/`** : Couche d'accès aux données.
-  - `repositories/` : Implémentations concrètes des dépôts (ex: `MockProductRepository`).
-- **`domain/`** : Cœur métier (indépendant du framework UI).
-  - `models/` : Entités pures utilisant `Equatable` (`Product`, `CartProduct`).
-  - `repositories/` : Définitions d'interfaces (contrats) pour les dépôts.
-  - `services/` : Logique métier pure (logique de filtrage, tri et recherche).
-- **`presentation/`** : Couche interface utilisateur et état.
-  - `providers/` : Notifiers Riverpod gérant l'état réactif.
-  - `screens/` : Écrans principaux de l'application.
-  - `widgets/` : Composants UI atomiques et réutilisables.
+### Gestion d'État avec Riverpod 3.0
+L'application utilise plus de **11 providers distincts** pour couvrir tous les aspects de la logique :
 
-### 🧩 Providers Riverpod Utilisés
-
-1.  **`productsProvider` (FutureProvider)** : Gère la récupération asynchrone de la liste des produits.
-2.  **`filteredProductsProvider` (Provider)** : Combine les filtres, la recherche et le tri pour fournir une liste dérivée.
-3.  **`cartProvider` (NotifierProvider)** : Gère l'état complexe du panier d'achat.
-4.  **`favoritesProvider` (NotifierProvider)** : Gère les favoris avec synchronisation `SharedPreferences`.
-5.  **`themeProvider` (NotifierProvider)** : Gère le mode d'affichage de l'application.
-6.  **`userProvider` (NotifierProvider)** : Gère les informations du profil utilisateur.
-7.  **`productSortProvider` (NotifierProvider)** : Gère l'ordre de tri sélectionné.
-8.  **`searchQueryProvider` (NotifierProvider)** : Gère la chaîne de recherche en temps réel.
-9.  **`sharedPreferencesProvider` (Provider)** : Fournit l'instance de stockage local via injection.
+1.  **`productsProvider` (FutureProvider)** : Gestion de la récupération asynchrone des données produits.
+2.  **`filteredProductsProvider` (Provider)** : Calcul dérivé combinant recherche, filtres et tri.
+3.  **`cartProvider` (NotifierProvider)** : Logique complexe du panier (incrémentation, calcul du total).
+4.  **`favoritesProvider` (NotifierProvider)** : Gestion des favoris avec synchronisation locale.
+5.  **`themeProvider` (NotifierProvider)** : Préférences d'affichage globales.
+6.  **`userProvider` (NotifierProvider)** : Informations de profil utilisateur.
+7.  **`productSortProvider`** & **`categoryFilterProvider`** : Gestion des préférences de navigation utilisateur.
+8.  **`searchQueryProvider`** : Gestion de la recherche textuelle en temps réel.
+9.  **`productServiceProvider`** : Injection de la couche de service métier.
+10. **`sharedPreferencesProvider`** : Injection de dépendance pour le stockage local.
 
 ## 🧪 Qualité du Code & Tests
 
-Le projet inclut une suite de tests robuste pour garantir la stabilité :
+Le projet impose des standards de qualité élevés :
 
-- **Tests Unitaires** (`test/unit/`) :
-  - `cart_notifier_test.dart` : Teste la logique complexe d'ajout/suppression et de calcul du total.
-  - `favorites_notifier_test.dart` : Valide la persistance et le chargement initial.
-  - `product_service_test.dart` : Teste les algorithmes de filtrage et de recherche.
-  - `sort_notifier_test.dart` : Valide les changements d'état du tri.
-- **Tests de Widgets** (`test/`) :
-  - `widget_test.dart` : Validation de l'UI, de l'initialisation et du rendu des composants clés.
+-   **Tests Unitaires** : Validation exhaustive de la logique métier (calculs de prix, algorithmes de filtrage, persistance).
+-   **Tests de Widgets** : Validation du rendu UI et de l'initialisation de l'application.
+-   **CI/CD (GitHub Actions)** : Intégration continue configurée pour exécuter les tests, l'analyse statique (`flutter analyze`) et la vérification du formatage à chaque commit.
+-   **Immuabilité** : Utilisation de `Equatable` pour garantir des comparaisons d'état fiables et éviter les reconstructions UI inutiles.
 
-## ⚙️ Installation
+## 📂 Structure du Projet
+
+```text
+lib/
+├── main.dart
+└── src/
+    ├── core/              # Code partagé global (widgets)
+    ├── features/          # Organisation par fonctionnalités
+    │   ├── products/      # Catalogue, tri, filtrage
+    │   ├── cart/          # Panier et checkout
+    │   ├── favorites/     # Logique de favoris
+    │   └── profile/       # Gestion utilisateur
+    └── shared/            # Providers transversaux (stockage)
+```
+
+## ⚙️ Installation & Lancement
 
 1.  **Prérequis** : Flutter SDK `^3.12.2`.
 2.  **Installation** : `flutter pub get`
-3.  **Tests** : `flutter test`
+3.  **Exécuter les tests** : `flutter test`
 4.  **Lancement** : `flutter run`
 
 ---
-Développé **Lionel Adandokpossi**.
+Développé avec ❤️ par **Lionel Adandokpossi**.
