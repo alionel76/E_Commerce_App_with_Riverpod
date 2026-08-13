@@ -31,7 +31,7 @@ Le projet met l'accent sur la fiabilité avec une couverture de tests accrue :
 
 1.  **Cloner le projet** :
     ```bash
-    git clone https://github.com/votre-repo/E_Commerce_App_with_Riverpod.git
+    git clone https://github.com/alionel76/E_Commerce_App_with_Riverpod.git
     ```
 2.  **Installer les dépendances** :
     ```bash
