@@ -1,39 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/theme_provider.dart';
+import '../providers/user_provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 50,
-            child: Icon(Icons.person, size: 50),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+    final user = ref.watch(userProvider);
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const CircleAvatar(
+          radius: 50,
+          child: Icon(Icons.person, size: 50),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          user?.name ?? 'Guest',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        Text(
+          user?.email ?? '',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 32),
+        ListTile(
+          title: const Text('Dark Mode'),
+          trailing: Switch(
+            value: themeMode == ThemeMode.dark,
+            onChanged: (_) => ref.read(themeProvider.notifier).toggleTheme(),
           ),
-          SizedBox(height: 16),
-          Text(
-            'John Doe',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          Text('john.doe@example.com'),
-          SizedBox(height: 32),
-          ListTile(
-            leading: Icon(Icons.history),
-            title: Text('Order History'),
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-          ),
-        ],
-      ),
+        ),
+        const Divider(),
+        const ListTile(
+          leading: Icon(Icons.history),
+          title: Text('Order History'),
+        ),
+        const ListTile(
+          leading: Icon(Icons.location_on),
+          title: Text('Shipping Addresses'),
+        ),
+        const ListTile(
+          leading: Icon(Icons.payment),
+          title: Text('Payment Methods'),
+        ),
+        const SizedBox(height: 32),
+        ElevatedButton(
+          onPressed: () {},
+          child: const Text('Logout'),
+        ),
+      ],
     );
   }
 }

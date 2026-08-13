@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/product_providers.dart';
 import '../providers/favorites_provider.dart';
 import '../widgets/product_card.dart';
+import '../widgets/async_value_widget.dart';
 
 class FavoritesScreen extends ConsumerWidget {
   const FavoritesScreen({super.key});
@@ -12,7 +13,8 @@ class FavoritesScreen extends ConsumerWidget {
     final favorites = ref.watch(favoritesProvider);
     final productsAsync = ref.watch(productsProvider);
 
-    return productsAsync.when(
+    return AsyncValueWidget(
+      value: productsAsync,
       data: (products) {
         final favoriteProducts = products.where((p) => favorites.contains(p.id)).toList();
         
@@ -32,8 +34,6 @@ class FavoritesScreen extends ConsumerWidget {
           itemBuilder: (context, index) => ProductCard(product: favoriteProducts[index]),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
     );
   }
 }

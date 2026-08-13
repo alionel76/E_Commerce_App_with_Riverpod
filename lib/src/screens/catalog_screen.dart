@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/product_providers.dart';
+import '../providers/search_provider.dart';
 import '../widgets/product_card.dart';
+import '../widgets/async_value_widget.dart';
 
 class CatalogScreen extends ConsumerWidget {
   const CatalogScreen({super.key});
@@ -13,6 +15,18 @@ class CatalogScreen extends ConsumerWidget {
 
     return Column(
       children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
+            onChanged: (value) => 
+                ref.read(searchQueryProvider.notifier).setQuery(value),
+            decoration: const InputDecoration(
+              hintText: 'Search products...',
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -21,44 +35,36 @@ class CatalogScreen extends ConsumerWidget {
               FilterChip(
                 label: const Text('All'),
                 selected: currentFilter == null,
-                onSelected: (_) => ref.read(categoryFilterProvider.notifier).state = null,
+                onSelected: (_) => ref.read(categoryFilterProvider.notifier).setCategory(null),
               ),
               const SizedBox(width: 8),
-              FilterChip(
-                label: const Text('Electronics'),
-                selected: currentFilter == 'Electronics',
-                onSelected: (_) => ref.read(categoryFilterProvider.notifier).state = 'Electronics',
-              ),
-              const SizedBox(width: 8),
-              FilterChip(
-                label: const Text('Home'),
-                selected: currentFilter == 'Home',
-                onSelected: (_) => ref.read(categoryFilterProvider.notifier).state = 'Home',
-              ),
-              const SizedBox(width: 8),
-              FilterChip(
-                label: const Text('Sports'),
-                selected: currentFilter == 'Sports',
-                onSelected: (_) => ref.read(categoryFilterProvider.notifier).state = 'Sports',
-              ),
+              ...['Electronics', 'Home', 'Sports'].map((cat) => Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: FilterChip(
+                  label: Text(cat),
+                  selected: currentFilter == cat,
+                  onSelected: (_) => ref.read(categoryFilterProvider.notifier).setCategory(cat),
+                ),
+              )),
             ],
           ),
         ),
         Expanded(
-          child: filteredProductsAsync.when(
-            data: (products) => GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: products.length,
-              itemBuilder: (context, index) => ProductCard(product: products[index]),
-            ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) => Center(child: Text('Error: $err')),
+          child: AsyncValueWidget(
+            value: filteredProductsAsync,
+            data: (products) => products.isEmpty 
+              ? const Center(child: Text('No products found.'))
+              : GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) => ProductCard(product: products[index]),
+                ),
           ),
         ),
       ],

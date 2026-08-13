@@ -1,12 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/product.dart';
 import '../repositories/product_repository.dart';
+import '../services/product_service.dart';
+import 'search_provider.dart';
 
 final productRepositoryProvider = Provider((ref) => ProductRepository());
 
-final productsProvider = FutureProvider<List<Product>>((ref) async {
+final productServiceProvider = Provider((ref) {
   final repository = ref.watch(productRepositoryProvider);
-  return repository.fetchProducts();
+  return ProductService(repository);
+});
+
+final productsProvider = FutureProvider<List<Product>>((ref) async {
+  final service = ref.watch(productServiceProvider);
+  return service.getProducts();
 });
 
 class CategoryFilter extends Notifier<String?> {
@@ -24,9 +31,14 @@ final categoryFilterProvider =
 final filteredProductsProvider = Provider<AsyncValue<List<Product>>>((ref) {
   final productsAsync = ref.watch(productsProvider);
   final selectedCategory = ref.watch(categoryFilterProvider);
+  final searchQuery = ref.watch(searchQueryProvider);
+  final service = ref.watch(productServiceProvider);
 
   return productsAsync.whenData((products) {
-    if (selectedCategory == null) return products;
-    return products.where((p) => p.category == selectedCategory).toList();
+    return service.filterProducts(
+      products, 
+      category: selectedCategory, 
+      query: searchQuery
+    );
   });
 });
