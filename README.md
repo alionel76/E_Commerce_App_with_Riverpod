@@ -47,13 +47,14 @@ Le projet impose des standards de qualité élevés avec une suite de tests orga
 ```text
 lib/
 ├── main.dart
-├── core/              # Code partagé global (widgets)
-├── features/          # Organisation par fonctionnalités
-│   ├── products/      # Catalogue, tri, filtrage
-│   ├── cart/          # Panier et checkout
-│   ├── favorites/     # Logique de favoris
-│   └── profile/       # Gestion utilisateur
-└── shared/            # Providers transversaux (stockage)
+├── core/              # Code partagé global (widgets génériques)
+├── features/          # Organisation par fonctionnalités (Feature-First)
+│   ├── products/      # Catalogue, tri, filtrage, recherche
+│   ├── cart/          # Panier et calculs de prix
+│   ├── favorites/     # Logique de favoris et persistance
+│   ├── profile/       # Gestion des informations utilisateur
+│   └── settings/      # Préférences globales (thème)
+└── shared/            # Providers transversaux et injection de dépendances
 ```
 
 ## ⚙️ Installation & Lancement
