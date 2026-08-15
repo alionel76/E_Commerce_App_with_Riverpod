@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'src/features/products/presentation/screens/home_screen.dart';
-import 'src/features/settings/presentation/providers/theme_provider.dart';
-import 'src/shared/providers/storage_providers.dart';
+import 'features/products/presentation/screens/home_screen.dart';
+import 'features/settings/presentation/providers/theme_provider.dart';
+import 'shared/providers/storage_providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

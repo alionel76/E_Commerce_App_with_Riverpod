@@ -12,7 +12,7 @@ L'objectif principal est de fournir une base solide pour une application de comm
 Contrairement à une structure "plate", ce projet organise le code par domaine métier (Features). Chaque fonctionnalité (`products`, `cart`, `favorites`, `profile`) possède sa propre logique interne, suivant le pattern **Data-Domain-Presentation** :
 
 -   **`core/`** : Contient les composants transversaux partagés par toutes les fonctionnalités (ex: `AsyncValueWidget` pour la gestion des erreurs).
--   **`src/features/`** : Cœur de l'application organisé par domaine.
+-   **`features/`** : Cœur de l'application organisé par domaine.
     -   **`domain/`** : Contient les entités pures (`Product`), les interfaces (contrats) et les services de logique métier.
     -   **`data/`** : Implémentations concrètes de l'accès aux données (Dépôts, APIs).
     -   **`presentation/`** : Gestion de l'état (Providers Riverpod) et composants UI (Screens, Widgets).
@@ -33,10 +33,12 @@ L'application utilise plus de **11 providers distincts** pour couvrir tous les a
 
 ## 🧪 Qualité du Code & Tests
 
-Le projet impose des standards de qualité élevés :
+Le projet impose des standards de qualité élevés avec une suite de tests organisée qui miroir la structure du code source :
 
--   **Tests Unitaires** : Validation exhaustive de la logique métier (calculs de prix, algorithmes de filtrage, persistance).
--   **Tests de Widgets** : Validation du rendu UI et de l'initialisation de l'application.
+-   **Tests de Core** (`test/core/`) : Validation des widgets transversaux comme `AsyncValueWidget`.
+-   **Tests de Fonctionnalités** (`test/features/`) : Validation de la logique métier (Services, Notifiers) propre à chaque domaine.
+-   **Tests de Domaine** (`test/domain/`) : Validation de l'intégrité des modèles de données.
+-   **Tests d'Intégration (Smoke Tests)** : `test/smoke_test.dart` valide le démarrage et le flux de navigation principal.
 -   **CI/CD (GitHub Actions)** : Intégration continue configurée pour exécuter les tests, l'analyse statique (`flutter analyze`) et la vérification du formatage à chaque commit.
 -   **Immuabilité** : Utilisation de `Equatable` pour garantir des comparaisons d'état fiables et éviter les reconstructions UI inutiles.
 
@@ -45,14 +47,13 @@ Le projet impose des standards de qualité élevés :
 ```text
 lib/
 ├── main.dart
-└── src/
-    ├── core/              # Code partagé global (widgets)
-    ├── features/          # Organisation par fonctionnalités
-    │   ├── products/      # Catalogue, tri, filtrage
-    │   ├── cart/          # Panier et checkout
-    │   ├── favorites/     # Logique de favoris
-    │   └── profile/       # Gestion utilisateur
-    └── shared/            # Providers transversaux (stockage)
+├── core/              # Code partagé global (widgets)
+├── features/          # Organisation par fonctionnalités
+│   ├── products/      # Catalogue, tri, filtrage
+│   ├── cart/          # Panier et checkout
+│   ├── favorites/     # Logique de favoris
+│   └── profile/       # Gestion utilisateur
+└── shared/            # Providers transversaux (stockage)
 ```
 
 ## ⚙️ Installation & Lancement
