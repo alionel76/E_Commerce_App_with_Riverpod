@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../settings/presentation/providers/theme_provider.dart';
-import '../providers/user_provider.dart';
+import '../providers/user_profile_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -9,7 +9,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
-    final user = ref.watch(userProvider);
+    final user = ref.watch(userProfileProvider);
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -82,7 +82,7 @@ class ProfileScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () {
-              ref.read(userProvider.notifier).updateName(controller.text);
+              ref.read(userProfileProvider.notifier).updateName(controller.text);
               Navigator.pop(context);
             },
             child: const Text('Save'),

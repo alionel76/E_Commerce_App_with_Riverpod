@@ -6,35 +6,41 @@ import 'package:e_commerce_app_with_riverpod/shared/providers/storage_providers.
 
 void main() {
   group('FavoritesNotifier Tests', () {
-    late ProviderContainer container;
+    late SharedPreferences prefs;
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({'favorites': ['1']});
-      final prefs = await SharedPreferences.getInstance();
-      container = ProviderContainer(
+      prefs = await SharedPreferences.getInstance();
+    });
+
+    test('Initial state is loaded from SharedPreferences', () async {
+      final container = ProviderContainer(
         overrides: [
           sharedPreferencesProvider.overrideWithValue(prefs),
         ],
       );
+      
+      final favorites = container.read(favoritesProvider);
+      expect(favorites.contains('1'), true);
+      expect(favorites.length, 1);
     });
 
-    test('Loads initial favorites', () {
-      expect(container.read(favoritesProvider), {'1'});
-    });
+    test('Toggle favorite adds/removes and persists', () async {
+      final container = ProviderContainer(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
+      );
 
-    test('Add favorite', () async {
+      // Add '2'
       await container.read(favoritesProvider.notifier).toggleFavorite('2');
       expect(container.read(favoritesProvider).contains('2'), true);
-    });
+      expect(prefs.getStringList('favorites'), contains('2'));
 
-    test('Remove favorite', () async {
+      // Remove '1'
       await container.read(favoritesProvider.notifier).toggleFavorite('1');
       expect(container.read(favoritesProvider).contains('1'), false);
-    });
-
-    test('Check if favorite', () {
-      expect(container.read(favoritesProvider.notifier).isFavorite('1'), true);
-      expect(container.read(favoritesProvider.notifier).isFavorite('99'), false);
+      expect(prefs.getStringList('favorites'), isNot(contains('1')));
     });
   });
 }

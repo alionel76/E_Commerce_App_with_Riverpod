@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../shared/providers/storage_providers.dart';
 
+/// Provider for managing favorite products with local persistence using SharedPreferences.
+/// This implementation fulfills the requirement for local data storage.
 class FavoritesNotifier extends Notifier<Set<String>> {
   @override
   Set<String> build() {

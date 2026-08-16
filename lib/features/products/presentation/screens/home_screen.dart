@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'catalog_screen.dart';
+import 'product_list_screen.dart';
 import '../../../favorites/presentation/screens/favorites_screen.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 import '../../../cart/presentation/screens/cart_screen.dart';
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const CatalogScreen(),
+    const ProductListScreen(),
     const FavoritesScreen(),
     const ProfileScreen(),
   ];

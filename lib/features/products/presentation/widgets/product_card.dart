@@ -20,7 +20,7 @@ class ProductCard extends ConsumerWidget {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) => ProductDetailScreen(product: product),
+              builder: (_) => ProductDetailScreen(productId: product.id),
             ),
           );
         },
